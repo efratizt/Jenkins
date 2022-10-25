@@ -4,12 +4,12 @@ RUN echo "pre-build actions"
 
 FROM alpine:latest as Build
 WORKDIR /build
-COPY --from Pre-build /app/* .
+COPY --from=Pre-build /app/* .
 RUN echo "building..."
 
 FROM alpine:latest as Test
 WORKDIR /test
-COPY --from Build /build/* .
+COPY --from=Build /build/* .
 RUN echo "building..."
 
 FROM alpine:latest as Security
