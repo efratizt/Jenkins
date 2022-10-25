@@ -1,29 +1,3 @@
-Skip to content
-Search or jump to…
-Pull requests
-Issues
-Marketplace
-Explore
- 
-@efratizt 
-elad6456
-/
-docker-cicd
-Public
-forked from yanivomc/docker-cicd
-Code
-Pull requests
-Actions
-Projects
-Security
-Insights
-docker-cicd/Jenkinsfile
-@elad6456
-elad6456 Create Jenkinsfile
-Latest commit f5057ff 6 days ago
- History
- 1 contributor
-63 lines (61 sloc)  1.37 KB
 
 pipeline {
     agent any
