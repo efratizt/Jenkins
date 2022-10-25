@@ -1,37 +1,92 @@
+Skip to content
+Search or jump to…
+Pull requests
+Issues
+Marketplace
+Explore
+ 
+@efratizt 
+elad6456
+/
+docker-cicd
+Public
+forked from yanivomc/docker-cicd
+Code
+Pull requests
+Actions
+Projects
+Security
+Insights
+docker-cicd/Jenkinsfile
+@elad6456
+elad6456 Create Jenkinsfile
+Latest commit f5057ff 6 days ago
+ History
+ 1 contributor
+63 lines (61 sloc)  1.37 KB
+
 pipeline {
     agent any
-    
-    
+
     stages {
+        stage('Checkout From SCM') {
+            steps {
+                echo 'Checkout from SCM..'
+                checkout ...
+            }
+        }
+        stage('Pre-build stg') {
+            steps {
+                echo 'prebuild actions..'
+            }
+        }
         stage('Build') {
             steps {
-                echo 'Building ...'
+              sh 'docker build --target Build'
             }
         }
-        
         stage('Test') {
-          agent {
-                docker { image "sonar-cube" }
-            }
             steps {
-                echo 'Testing ...'
+                echo 'docker build --target test'
             }
         }
-        
-        stage('integrationTest') {
-            	agent {
-                	docker { image 'maven:3.8.1-adoptopenjdk-11' }
+        stage('security') {
+            agent {
+                docker { image 'alpine:latest' }
             }
             steps {
-                sh echo "inside the container" 
-                sleep 20
+                sh 'echo this is security'
             }
+        }
+        stage('Back-end') {
+            agent {
+                docker { image 'maven:3.8.1-adoptopenjdk-11' }
+            }
+            steps {
+                sh 'mvn --version'
+            }
+        }
+        stage('Front-end') {
+            agent {
+                docker { image 'node:16.13.1-alpine' }
+            }
+            steps {
+                sh 'node --version'
+            }
+        }
+        stage('Deploy') {
+            agent {
+                docker { image 'aws-cli:latest' }
+            }
+            steps {
+                sh 's3 cp src dst'
+            }
+        }
+      stage ('Post') {
+        echo "clear env"
+      }
+      
     }
-    
-            stage('deploy') {
-           steps {
-                echo "Deploying success..."
-        }
-            }
-            }
-        }
+}
+
+
