@@ -1,16 +1,14 @@
-FROM alpine:latest as Pre-build
-WORKDIR /app
-RUN echo "pre-build actions"
+FROM alpine:latest as pre-build
+COPY ./helloworld.txt ./code/helloworld.txt
+RUN echo "this is a PRE-BUILD step"
 
-FROM alpine:latest as Build
-WORKDIR /build
-COPY --from=Pre-build /app/* .
-RUN echo "building..."
+FROM alpine:latest as build
+COPY --from=pre-build ./code/helloworld.txt ./build/helloworld.txt
+RUN echo "this is a build step"
 
-FROM alpine:latest as Test
-WORKDIR /test
-COPY --from=Build /build/* .
-RUN echo "building..."
+FROM alpine:latest as test
+COPY --from=build ./build/helloworld.txt ./test/helloworld.txt
+RUN echo "this is a test step"
 
 FROM alpine:latest as Security
 WORKDIR /security
