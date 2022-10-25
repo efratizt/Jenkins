@@ -1,0 +1,37 @@
+pipeline {
+    agent any
+    
+    
+    stages {
+        stage('Build') {
+            steps {
+                echo 'Building ...'
+            }
+        }
+        
+        stage('Test') {
+          agent {
+                docker { image "sonar-cube" }
+            }
+            steps {
+                echo 'Testing ...'
+            }
+        }
+        
+        stage('integrationTest') {
+            	agent {
+                	docker { image 'maven:3.8.1-adoptopenjdk-11' }
+            }
+            steps {
+                sh echo "inside the container" 
+                sleep 20
+            }
+    }
+    
+            stage('deploy') {
+           steps {
+                echo "Deploying success..."
+        }
+            }
+            }
+        }
