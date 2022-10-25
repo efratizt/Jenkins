@@ -1,0 +1,11 @@
+ipeline {
+    agent any
+
+    stages {
+        stage('without-build-kit') {
+            steps {
+                sh 'docker build --target test .'
+            }
+        }
+    }
+}
